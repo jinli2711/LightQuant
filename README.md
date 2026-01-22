@@ -43,11 +43,20 @@ Here we show the process of how LLM extracts financial factors from news texts:
 ![framework.jpg](./pictures/framework.jpg)
 To get started with CSMD, follow these steps:
 1. **Installation**: Install the necessary dependencies by running the following command:
+
 ```python
 pip install -r requirements.txt
 ```
+**注意：**
+
+* 需要将requirements.txt的torch==2.4.1+cu118注释掉，单独下载
+
+```bash
+pip install torch==2.4.1 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+```
+
 2. **Download**: Download our dataset
-You can download the dataset from [here](./dataset).
+  You can download the dataset from [here](./dataset).
 
 Of cource, you can build your own dataset with our method. We open source our data collecting and processing flow and code, you can refer to ./data_construction to build your own dataset.
 ```python

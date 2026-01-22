@@ -1,8 +1,15 @@
-from modelscope import AutoTokenizer, AutoModel
+
+# 尝试从Hugging Face导入，如果失败则使用ModelScope
+try:
+    from transformers import AutoTokenizer, AutoModel
+    print("使用Hugging Face的AutoTokenizer和AutoModel")
+except ImportError:
+    from modelscope import AutoTokenizer, AutoModel
+    print("使用ModelScope的AutoTokenizer和AutoModel")
+
 import torch
 import torch.nn as nn
 import warnings
-import os
 import pandas as pd
 import numpy as np
 from tqdm import tqdm

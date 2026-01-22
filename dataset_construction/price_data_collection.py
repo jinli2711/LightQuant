@@ -14,8 +14,11 @@ class A_Stocks_DataCollection:
     def get_sz50_stocks(self):
 
         all_stocks = self.get_stocks_code_name()
+        # 使用utf-8-sig编码读取文件，处理带有BOM的UTF-8文件
         sz50_stocks = pd.read_csv('../llm_factor/CSMD50.csv', encoding="utf-8")
         result = pd.merge(all_stocks, sz50_stocks[['code']], on='code', how='inner')
+        print("上证50成分股列表：")
+        print(result)
         return result
 
     def get_data(self):
@@ -51,8 +54,7 @@ class A_Stocks_DataCollection:
 
             data_list.append(rs.get_row_data())
         result = pd.DataFrame(data_list, columns=rs.fields)
-        print(result)
-
+        # 不再打印所有股票，只在get_sz50_stocks中打印上证50成分股
         return result
 
     def get_stock_code_industry(self, result):
@@ -104,12 +106,15 @@ class A_Stocks_DataCollection:
 
                 k_data_list.append(rs.get_row_data())
             k_result = pd.DataFrame(k_data_list, columns=rs.fields)
-            k_result = pd.merge(k_result, result[['code', 'code_name','industry', 'industryClassification']], on='code',
-                              how='left')
-            if start_date==end_date:
-                k_result.to_csv(f"../data/A_Stocks_Data/{k_result['code'][0]}.csv",encoding="utf-8-sig", index=False, mode="a",header=0)
+            if not k_result.empty:
+                k_result = pd.merge(k_result, result[['code', 'code_name','industry', 'industryClassification']], on='code',
+                                  how='left')
+                if start_date==end_date:
+                    k_result.to_csv(f"../data/A_Stocks_Data/{k_result['code'][0]}.csv",encoding="utf-8-sig", index=False, mode="a",header=0)
+                else:
+                    k_result.to_csv(f"../data/A_Stocks_Data/{k_result['code'][0]}.csv",encoding="utf-8-sig", index=False)
             else:
-                k_result.to_csv(f"../data/A_Stocks_Data/{k_result['code'][0]}.csv",encoding="utf-8-sig", index=False)
+                print(f"No data for {code}, skipping...")
 
             
 

@@ -88,9 +88,16 @@ def get_article_links(ticker, ticker_name):
 
     # Headless mode, running in the background
     chrome_options.add_argument("headless")
+    
+    # Custom Chrome browser and user data directory
+    chrome_options.binary_location = r"E:\software\Chrome_Test\chrome-win64\chrome.exe"
+    chrome_options.add_argument("--user-data-dir=E:/software/Chrome_Test/UserData")
 
+    # Configure ChromeDriver path
+    service = Service(r"E:\software\Chrome_Test\chromedriver-win64\chromedriver.exe")
+    
     # Configure and launch the WebDriver
-    driver = webdriver.Chrome(options=chrome_options)
+    driver = webdriver.Chrome(service=service, options=chrome_options)
 
     # Website
     url = f"https://stcn.com/article/search.html?search_type=news&keyword={ticker_name}&uncertainty=1&sorter=time"
@@ -183,8 +190,15 @@ def fetch_news(ticker):
             chrome_options.add_argument("headless")
             # use random User-Agent
             chrome_options.add_argument(f"user-agent={random.choice(headers_list)['User-Agent']}")
+            
+            # Custom Chrome browser and user data directory
+            chrome_options.binary_location = r"E:\software\Chrome_Test\chrome-win64\chrome.exe"
+            chrome_options.add_argument("--user-data-dir=E:/software/Chrome_Test/UserData")
 
-            driver = webdriver.Chrome(options=chrome_options)
+            # Configure ChromeDriver path
+            service = Service(r"E:\software\Chrome_Test\chromedriver-win64\chromedriver.exe")
+            
+            driver = webdriver.Chrome(service=service, options=chrome_options)
 
             count += 1
             if count % 120 == 0:
@@ -196,7 +210,6 @@ def fetch_news(ticker):
             try:
                 driver.get(article_link)
                 time.sleep(1.2)
-
 
                 soup = BeautifulSoup(driver.page_source, 'html.parser')
 

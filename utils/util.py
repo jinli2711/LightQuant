@@ -57,7 +57,10 @@ def linear_interpolation(dataset):
 
 # Generate Trading Date List
 def generate_trading_date_list(dataset):
-    price_path = f"../dataset/{dataset}/price/中国石化.csv"
+    price_dir = f"../dataset/{dataset}/price/"
+    # Get the first CSV file in the directory
+    ticker_csv = next(os.listdir(price_dir))
+    price_path = os.path.join(price_dir, ticker_csv)
     df = pd.read_csv(price_path)
 
     ticker_csv_list = df['Date'].tolist()
